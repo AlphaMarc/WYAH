@@ -53,3 +53,6 @@ instance Alternative Parser where
 instance MonadPlus Parser where
   mzero = Parser (const [])
   mplus p q = Parser (\s -> parse p s ++ parse q s)
+
+satisfy :: (Char -> Bool) -> Parser Char
+satisfy f = item >>= (\a -> if f a then return a else mzero)
