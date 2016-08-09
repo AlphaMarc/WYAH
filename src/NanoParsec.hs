@@ -70,3 +70,13 @@ chainl1 p op = do {a <- p; rest a}
                      b <- p
                      rest (f a b))
                   <|> return a
+
+
+char :: Char -> Parser Char
+char c = satisfy (c==)
+
+natural :: Parser Integer
+natural = read <$> some (satisfy isDigit)
+
+string :: String -> Parser String
+string = mapM char
