@@ -19,3 +19,9 @@ item = Parser $ \s ->
     case s of
       [] -> []
       (s:ss) -> [(s,ss)]
+
+
+instance Functor Parser where
+  fmap f (Parser cs) = Parser (\s -> do
+    (a,b) <- cs s
+    return (f a, b))
