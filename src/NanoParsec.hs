@@ -56,3 +56,17 @@ instance MonadPlus Parser where
 
 satisfy :: (Char -> Bool) -> Parser Char
 satisfy f = item >>= (\a -> if f a then return a else mzero)
+
+oneOf :: [Char] -> Parser Char
+oneOf l = satisfy (`elem` l)
+
+
+chainl :: Parser a -> Parser (a -> a -> a) -> a -> Parser a
+chainl p op a = (p `chainl1` op) <|> return a
+
+chainl1 :: Parser a -> Parser (a -> a -> a) -> Parser a
+chainl1 p op = do {a <- p; rest a}
+  where rest a = (do f <- op
+                     b <- p
+                     rest (f a b))
+                  <|> return a
