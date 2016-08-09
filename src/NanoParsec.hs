@@ -40,3 +40,16 @@ instance Applicative Parser where
 
 instance Monad Parser where
   p >>= f = Parser (concatMap (\(a, s') -> parse (f a) s') . parse p)
+
+
+-- allows us to use a parser q if parsing with p returned an empty list
+instance Alternative Parser where
+  empty = mzero
+  p <|> q = Parser (\s ->
+                 case parse p s of
+                   [] -> parse q s
+                   res  -> res)
+
+instance MonadPlus Parser where
+  mzero = Parser (const [])
+  mplus p q = Parser (\s -> parse p s ++ parse q s)
