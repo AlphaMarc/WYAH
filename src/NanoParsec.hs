@@ -22,6 +22,21 @@ item = Parser $ \s ->
 
 
 instance Functor Parser where
-  fmap f (Parser cs) = Parser (\s -> do
-    (a,b) <- cs s
-    return (f a, b))
+  fmap f (Parser cs) = Parser (\s ->
+                            do
+                              (a,b) <- cs s
+                              return (f a, b))
+
+
+instance Applicative Parser where
+  (Parser f) <*> (Parser g) = Parser (\s ->
+                                do
+                                  (k, s1) <- f s
+                                  (a, s2) <- g s1
+                                  return (k a, s2))
+
+  pure a = Parser (\s -> [(a, s)])
+
+
+instance Monad Parser where
+  p >>= f = Parser (concatMap (\(a, s') -> parse (f a) s') . parse p)
