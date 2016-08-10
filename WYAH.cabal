@@ -17,8 +17,8 @@ library
   hs-source-dirs:      src
   exposed-modules:     NanoParsec,
                        SimpleGrammar,
-                       Parser
-                       
+                       Parser,
+                       Syntax
   build-depends:       base >= 4.7 && < 5,
                        parsec >=3.1
 
