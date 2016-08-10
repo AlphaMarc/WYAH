@@ -76,7 +76,36 @@ char :: Char -> Parser Char
 char c = satisfy (c==)
 
 natural :: Parser Integer
-natural = read <$> some (satisfy isDigit)
+natural = read <$> some digit
+
+digit :: Parser Char
+digit = satisfy isDigit
 
 string :: String -> Parser String
 string = mapM char
+
+spaces :: Parser String
+spaces = many $ oneOf " \n\r"
+
+reserved :: String -> Parser String
+reserved s = token (string s)
+
+token :: Parser a -> Parser a
+token p = do a <- p
+             spaces
+             return a
+
+
+number :: Parser Int
+number = do
+  s <- string "-" <|> return []
+  cs <- some digit
+  return $ read (s++cs)
+
+
+parens :: Parser a -> Parser a
+parens m = do
+  reserved "("
+  n <- m
+  reserved ")"
+  return n
