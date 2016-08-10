@@ -2,8 +2,8 @@ module SimpleGrammar where
 
 
 import           Control.Applicative
+import           Control.Monad
 import           NanoParsec
-import Control.Monad
 
 --- We can now define our own little language our base grammar is based arount the Expr type
 data Expr =
@@ -43,8 +43,8 @@ mulop = infixop "*" Mul
 run :: String -> Either String Expr
 run = runParser expr
 
-main :: IO ()
-main = forever $ do
+repl :: IO ()
+repl = forever $ do
   putStr "> "
   a <- getLine
   print . either id (show . eval) $ run a
