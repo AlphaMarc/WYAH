@@ -33,4 +33,5 @@ parens = Tok.parens lexer
 reserved :: String -> Parser ()
 reserved = Tok.reserved lexer
 
-semiSep ::
+semiSep :: Parser a -> Parser [a]
+semiSep = Tok.semiSep lexer
