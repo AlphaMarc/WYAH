@@ -1,6 +1,6 @@
 {-# OPTIONS_GHC -fno-warn-unused-do-bind #-}
 
-module NanoParsec where
+module SimpleLang.NanoParsec where
 
 import           Control.Applicative
 import           Control.Monad

@@ -1,6 +1,7 @@
-module Syntax where
+module SimpleLang.Syntax where
 
 import           Data.Functor.Identity
+import           Data.Maybe            (fromMaybe)
 import qualified Parser                as P
 import           Text.Parsec
 import qualified Text.Parsec.Expr      as Ex
@@ -75,6 +76,7 @@ contents p = do
 
 -- The toplevel function we'll expose from our Parse module is parseExpr
 -- which will be called as the entry point in our REPL.
+parseExpr :: String -> Either ParseError Expr
 parseExpr = parse (contents expr) "<stdin>"
 
 
@@ -92,16 +94,28 @@ isVal Fl = True
 isVal t | isNum t = True
 isVal _ = False
 
-eval :: Expr -> Maybe Expr
-eval x = case x of
+eval' :: Expr -> Maybe Expr
+eval' x = case x of
   IsZero Zero               -> Just Tr
   IsZero (Succ t) | isNum t -> Just Fl
-  IsZero t                  -> IsZero <$> eval t
-  Succ t                    -> Succ <$> eval t
+  IsZero t                  -> IsZero <$> eval' t
+  Succ t                    -> Succ <$> eval' t
   Pred Zero                 -> Just Zero
   Pred (Succ t) | isNum t   -> Just t
-  Pred t                    -> Pred <$> eval t
+  Pred t                    -> Pred <$> eval' t
   If Tr  c _                -> Just c
   If Fl _ a                 -> Just a
-  If t c a                  -> (\t' -> If t' c a) <$> eval t
+  If t c a                  -> (\t' -> If t' c a) <$> eval' t
   _                         -> Nothing
+
+
+-- we need that function to be able to evaluate multiple times
+nf :: Expr -> Expr
+nf x = fromMaybe x (nf <$> eval' x)
+
+
+
+eval :: Expr -> Maybe Expr
+eval t = case nf t of
+  nft | isVal nft -> Just nft
+      | otherwise -> Nothing -- term is "stuck"

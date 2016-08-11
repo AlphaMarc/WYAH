@@ -1,4 +1,4 @@
-module Parser where
+module SimpleLang.Parser where
 
 import           Data.Functor.Identity
 import           Text.Parsec
