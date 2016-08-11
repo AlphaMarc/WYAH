@@ -1,7 +1,7 @@
 module REPL where
 
 import           Control.Monad.IO.Class   (liftIO)
-import           Syntax
+import           SimpleLang.Syntax
 import           System.Console.Haskeline
 
 

@@ -2,7 +2,7 @@ module SimpleLang.Syntax where
 
 import           Data.Functor.Identity
 import           Data.Maybe            (fromMaybe)
-import qualified Parser                as P
+import qualified SimpleLang.Parser     as P
 import           Text.Parsec
 import qualified Text.Parsec.Expr      as Ex
 import qualified Text.Parsec.Token     as Tok

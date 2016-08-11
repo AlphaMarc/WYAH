@@ -1,9 +1,9 @@
-module SimpleGrammar where
+module SimpleLang.SimpleGrammar where
 
 
 import           Control.Applicative
 import           Control.Monad
-import           NanoParsec
+import           SimpleLang.NanoParsec
 
 --- We can now define our own little language our base grammar is based arount the Expr type
 data Expr =

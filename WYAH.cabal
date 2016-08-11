@@ -15,10 +15,10 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     NanoParsec,
-                       SimpleGrammar,
-                       Parser,
-                       Syntax
+  exposed-modules:     SimpleLang.NanoParsec,
+                       SimpleLang.SimpleGrammar,
+                       SimpleLang.Parser,
+                       SimpleLang.Syntax
   build-depends:       base >= 4.7 && < 5,
                        parsec >=3.1
 
