@@ -8,6 +8,7 @@ import           Data.Char
 
 data Parser a = Parser {parse :: String -> [(a, String)]}
 
+
 runParser :: Parser a -> String -> Either String a
 runParser p s = case parse p s of
   [(res, [])] -> Right res
