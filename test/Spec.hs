@@ -1,6 +1,7 @@
 module Main where
 
-import           Test.DocTest
+import           ParserTest
+import           Test.QuickCheck
 
 main :: IO ()
-main = doctest ["src/LambdaCalc/Parser.hs"]
+main = quickCheck prop_ParseInt

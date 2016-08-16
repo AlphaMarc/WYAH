@@ -7,6 +7,8 @@ import qualified Text.Parsec.Token    as Tok
 
 import           LambdaCalc.Syntax
 
+
+
 lexer :: Tok.TokenParser ()
 lexer = Tok.makeTokenParser style
           where style = haskellStyle { Tok.reservedNames = []
@@ -69,10 +71,10 @@ number = do
 
 
 -- | parse a boolean
--- >>> runParser number () "" "true"
+-- >>> runParser bool () "" "true"
 -- Right (Lit (LBool True))
 --
--- >>> runParser number () "" "false"
+-- >>> runParser bool () "" "false"
 -- Right (Lit (LBool False))
 bool :: Parser Expr
 bool = true <|> false
@@ -83,8 +85,10 @@ bool = true <|> false
 -- this is the unit parser for our untyped Lambda Calculus
 term :: Parser Expr
 term = parens expr
+   <|> bool
    <|> variable
    <|> number
+
    <|> lambda
 
 
@@ -96,4 +100,4 @@ expr = do
 
 
 parseExpr :: String -> Either ParseError Expr
-parseExpr = runParser (contents expr) () "<stdin>" 
+parseExpr = runParser (contents expr) () "<stdin>"

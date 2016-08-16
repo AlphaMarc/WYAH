@@ -7,9 +7,9 @@ data Expr
   | App Expr Expr
   | Lam Name Expr
   | Lit Lit
-  deriving (Show)
+  deriving (Show, Eq)
 
 data Lit
   = LInt Integer
   | LBool Bool
-  deriving (Show)
+  deriving (Show, Eq)

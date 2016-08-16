@@ -1,6 +1,6 @@
 module Main where
 
-import           SimpleGrammar
+import           SimpleLang.SimpleGrammar
 
 main :: IO ()
-main = SimpleGrammar.repl
+main = SimpleLang.SimpleGrammar.repl
