@@ -2,6 +2,7 @@ module LambdaCalc.Eval where
 
 import           Data.Map          as Map
 
+import           LambdaCalc.Pretty
 import           LambdaCalc.Syntax
 
 
@@ -18,7 +19,12 @@ emptyScope = Map.empty
 instance Show Value where
   show (VInt a) = show a
   show (VBool a) = show a
-  show (VClosure s ex sc) = "<<closure>>"
+  show (VClosure s ex sc) = "<<closure : " ++ ppexpr (Lam s ex) ++ " >> " ++ "env : " ++ show sc ++ "\n"
+
+  <<closure : \z . (x z (y z)) >>
+  env : fromList [("x",<<closure : \x y . x >> env : fromList [] >>)
+                 ,("y",<<closure : \x y . x >> env : fromList [] >>)]
+
 
 
 -- | evaluate a simple expression
@@ -37,9 +43,9 @@ instance Show Value where
 -- >>> eval emptyScope (App (App (Lam "x" (Lam "y" (Var "x"))) (Lit (LInt 1))) (Lit (LInt 2)))
 -- 1
 --
--- (\x y z . x z (y z)) (\x y . x) (\x y . x)
--- >>> eval emptyScope (App (App (Lam "x" (Lam "y" (Lam "z" (App (App (Var "x") (Var "z")) (App (Var "y") (Var "z")))))) (Lam "x" (Lam "y" (Var "x")))) (Lam "x" (Lam "y" (Var "x"))))
--- <<closure>>
+-- (\x y z . x z (y z)) (\x y . x) (\x y . x) 1
+-- >>> eval emptyScope (App (App (App (Lam "x" (Lam "y" (Lam "z" (App (App (Var "x") (Var "z")) (App (Var "y") (Var "z")))))) (Lam "x" (Lam "y" (Var "x")))) (Lam "x" (Lam "y" (Var "x")))) (Lit (LInt 1)))
+-- 1
 eval :: Scope -> Expr -> Value
 eval _ (Lit (LInt x))  = VInt x
 eval _ (Lit (LBool b)) = VBool b

@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleInstances    #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 
-module Pretty (
+module LambdaCalc.Pretty (
   ppexpr
 ) where
 
@@ -29,6 +29,8 @@ instance Pretty Expr where
     where
       vars = map (ppr 0) (viewVars e)
       body = ppr (p+1) (viewBody e)
+
+
 
 viewVars :: Expr -> [Name]
 viewVars (Lam n a) = n : viewVars a
