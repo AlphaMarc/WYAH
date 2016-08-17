@@ -1,6 +1,6 @@
 module Main where
 
-import           SimpleLang.SimpleGrammar
+import           LambdaRepl
 
 main :: IO ()
-main = SimpleLang.SimpleGrammar.repl
+main = print "hello"

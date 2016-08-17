@@ -7,6 +7,9 @@ import qualified Text.Parsec.Token    as Tok
 
 import           LambdaCalc.Syntax
 
+-- $setup
+-- >>> import Test.QuickCheck
+-- >>> import Data.Char (toLower)
 
 
 lexer :: Tok.TokenParser ()
@@ -64,6 +67,8 @@ lambda = do
 -- | parse a number
 -- >>> runParser number () "" "1234"
 -- Right (Lit (LInt 1234))
+--
+-- prop> runParser number () "" (show . abs $ i) == Right (Lit (LInt (abs i)))
 number :: Parser Expr
 number = do
   n <- natural
@@ -88,7 +93,6 @@ term = parens expr
    <|> bool
    <|> variable
    <|> number
-
    <|> lambda
 
 
